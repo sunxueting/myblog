@@ -347,14 +347,14 @@ function App(){
       <Section title="☁️ 发布设置（GitHub）">
         <Row label="GitHub Personal Access Token">
           <div className="flex gap-2">
-            <input value={getGHSettings().token} onChange={e=>{var c=getGHSettings();c.token=e.target.value;saveGHSettings(c)}} className="flex-1 border border-stone-200 rounded-lg px-3 py-2 text-sm font-mono" type="password" placeholder="ghp_xxxxxxxxxxxx"/>
+            <input id="gh-token" defaultValue={getGHSettings().token} onChange={e=>{var c=getGHSettings();c.token=e.target.value;saveGHSettings(c)}} className="flex-1 border border-stone-200 rounded-lg px-3 py-2 text-sm font-mono" type="password" placeholder="ghp_xxxxxxxxxxxx"/>
             <a href="https://github.com/settings/tokens" target="_blank" className="text-xs text-amber-600 hover:text-amber-700 whitespace-nowrap self-center">获取 Token →</a>
           </div>
           <p className="text-xs text-stone-400 mt-1">需要 <code className="bg-stone-100 px-1 rounded">contents:write</code> 权限。Token 仅保存在此浏览器中。</p>
         </Row>
-        <Row label="GitHub 仓库所有者"><input value={getGHSettings().owner} onChange={e=>{var c=getGHSettings();c.owner=e.target.value;saveGHSettings(c)}} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm" placeholder="你的 GitHub 用户名"/></Row>
-        <Row label="仓库名称"><input value={getGHSettings().repo} onChange={e=>{var c=getGHSettings();c.repo=e.target.value;saveGHSettings(c)}} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm" placeholder="my-blog"/></Row>
-        <Row label="分支"><input value={getGHSettings().branch||"main"} onChange={e=>{var c=getGHSettings();c.branch=e.target.value;saveGHSettings(c)}} className="w-40 border border-stone-200 rounded-lg px-3 py-2 text-sm" placeholder="main"/></Row>
+        <Row label="GitHub 仓库所有者"><input id="gh-owner" defaultValue={getGHSettings().owner} onChange={e=>{var c=getGHSettings();c.owner=e.target.value;saveGHSettings(c)}} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm" placeholder="你的 GitHub 用户名"/></Row>
+        <Row label="仓库名称"><input id="gh-repo" defaultValue={getGHSettings().repo} onChange={e=>{var c=getGHSettings();c.repo=e.target.value;saveGHSettings(c)}} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm" placeholder="my-blog"/></Row>
+        <Row label="分支"><input id="gh-branch" defaultValue={getGHSettings().branch||"main"} onChange={e=>{var c=getGHSettings();c.branch=e.target.value;saveGHSettings(c)}} className="w-40 border border-stone-200 rounded-lg px-3 py-2 text-sm" placeholder="main"/></Row>
         <p className="text-xs text-stone-400 mt-2">💡 使用流程：编辑内容 → 点击顶部「🚀 发布到云端」→ 等待约 30 秒 → 刷新网站即可看到更新。</p>
       </Section>
       
