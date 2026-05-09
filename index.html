@@ -99,21 +99,44 @@ if(typeof __BLOG_DATA!=="undefined"){
       var content="var __BLOG_DATA = "+JSON.stringify(data)+";";
       var b64=btoa(unescape(encodeURIComponent(content)));
       var url="https://api.github.com/repos/"+cfg.owner+"/"+cfg.repo+"/contents/data.js";
+      console.log("[Publish] Fetching:",url);
       // First get the file SHA
       fetch(url,{headers:{Authorization:"Bearer "+cfg.token,"Accept":"application/vnd.github+json"}})
-        .then(function(r){if(!r.ok)throw new Error("获取文件信息失败: "+r.status);return r.json()})
+        .then(function(r){if(!r.ok)throw new Error("步骤1获取文件失败 HTTP "+r.status+" — 请检查：仓库是否存在、data.js 是否已上传、Token 是否有 repo 权限。\n请求地址: "+url);return r.json()})
         .then(function(fileInfo){
+          console.log("[Publish] Got SHA:",fileInfo.sha);
           return fetch(url,{
             method:"PUT",
             headers:{Authorization:"Bearer "+cfg.token,"Accept":"application/vnd.github+json","Content-Type":"application/json"},
             body:JSON.stringify({message:"Update blog data via admin panel",content:b64,sha:fileInfo.sha,branch:cfg.branch})
           });
         })
-        .then(function(r){if(!r.ok)throw new Error("发布失败: "+r.status);return r.json()})
-        .then(function(result){callback(null,result)})
+        .then(function(r){if(!r.ok)throw new Error("步骤2上传失败 HTTP "+r.status);return r.json()})
+        .then(function(result){console.log("[Publish] Success!");callback(null,result)})
+        .catch(function(err){console.error("[Publish] Error:",err.message);callback(err.message,null)});
+    }
+    function testGHConnection(cfg,callback){
+      // Test repo access first
+      var repoUrl="https://api.github.com/repos/"+cfg.owner+"/"+cfg.repo;
+      fetch(repoUrl,{headers:{Authorization:"Bearer "+cfg.token,"Accept":"application/vnd.github+json"}})
+        .then(function(r){
+          if(r.status===404)throw new Error("仓库不存在: "+cfg.owner+"/"+cfg.repo+" — 请检查 GitHub 用户名和仓库名是否填写正确");
+          if(r.status===401)throw new Error("Token 无效或无权限 — 请检查 Token 是否正确，是否勾选了 repo 权限");
+          if(!r.ok)throw new Error("仓库访问失败 HTTP "+r.status);
+          return r.json();
+        })
+        .then(function(repo){
+          // Check file exists
+          return fetch(repoUrl+"/contents/data.js",{headers:{Authorization:"Bearer "+cfg.token,"Accept":"application/vnd.github+json"}});
+        })
+        .then(function(r){
+          if(r.status===404)throw new Error("仓库存在，但找不到 data.js 文件 — 请确认已将 data.js 上传到仓库根目录");
+          if(!r.ok)throw new Error("文件访问失败 HTTP "+r.status);
+          callback(null,"✅ 连接成功！仓库: "+cfg.owner+"/"+cfg.repo+", 文件: data.js");
+        })
         .catch(function(err){callback(err.message,null)});
     }
-    console.log("[Data] publishDataToCloud defined");
+    console.log("[Data] publish + testConnection defined");
 
     // Update diag
     (function(){
@@ -356,6 +379,14 @@ function App(){
         <Row label="仓库名称"><input id="gh-repo" defaultValue={getGHSettings().repo} onChange={e=>{var c=getGHSettings();c.repo=e.target.value;saveGHSettings(c)}} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm" placeholder="my-blog"/></Row>
         <Row label="分支"><input id="gh-branch" defaultValue={getGHSettings().branch||"main"} onChange={e=>{var c=getGHSettings();c.branch=e.target.value;saveGHSettings(c)}} className="w-40 border border-stone-200 rounded-lg px-3 py-2 text-sm" placeholder="main"/></Row>
         <p className="text-xs text-stone-400 mt-2">💡 使用流程：编辑内容 → 点击顶部「🚀 发布到云端」→ 等待约 30 秒 → 刷新网站即可看到更新。</p>
+        <button onClick={()=>{
+          var cfg=getGHSettings();
+          if(!cfg.token||!cfg.owner||!cfg.repo){show("请先填写 Token、仓库所有者和仓库名称");return}
+          show("⏳ 正在测试连接...");
+          testGHConnection(cfg,function(err,msg){
+            if(err)show("❌ "+err);else show(msg);
+          });
+        }} className="mt-3 text-xs bg-stone-500 hover:bg-stone-600 text-white px-3 py-1.5 rounded-lg transition-colors">🔍 测试连接</button>
       </Section>
       
             </div>
