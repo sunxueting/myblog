@@ -2,7 +2,15 @@
 [build]
   publish = "."
 
-# Custom headers for security
+# Prevent WeChat / browser caching for HTML
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma = "no-cache"
+    Expires = "0"
+
+# Custom headers for security (all files)
 [[headers]]
   for = "/*"
   [headers.values]
