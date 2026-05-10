@@ -44,7 +44,6 @@
 </script>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="data.js"></script>
 <script>if(typeof __BLOG_DATA==="undefined"){console.warn("data.js failed to load, will use fallback");}</script>
 <script>
@@ -155,49 +154,50 @@ if(typeof __BLOG_DATA!=="undefined"){
     document.getElementById("root").innerHTML='<div style="padding:40px;text-align:left;font-family:monospace;max-width:650px;margin:0 auto"><h2 style="color:#c0392b">数据初始化失败</h2><pre style="background:#fff3f3;padding:16px;border-radius:8px;border:1px solid #fcc;font-size:13px;white-space:pre-wrap">'+e.message+'\n'+e.stack+'</pre></div>';
   }
 </script>
-<script type="text/babel" data-presets="react">
+<script>
+
 console.log("Babel script executing...");
 const{useState,useEffect,useCallback}=React;
 
 // ===== ICONS =====
 const I={
-  User:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
-  Target:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
-  Heart:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
-  Calendar:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
-  Globe:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
-  Sparkles:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063A2 2 0 0 0 14.063 15.5l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>,
-  Star:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
-  ScrollText:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 0 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>,
-  Clock:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-  FileText:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>,
-  ChevronRight:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>,
-  BookOpen:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
-  BookMarked:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><polyline points="10 2 10 10 13 7 16 10 16 2"/></svg>,
-  TrendingUp:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>,
-  Library:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 6 4 6"/><path d="M12 18 12 6"/><path d="M20 6 18 6"/><path d="M8 18 4 6"/><path d="m16 18 4-12"/><path d="M4 22 20 22"/></svg>,
-  Baby:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.8.7 5.2 1.8"/><path d="M16 2s0 2 2 2 2-2 2-2"/></svg>,
-  Home:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
-  Lightbulb:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5C7.7 12.8 8 14.5 8 16"/><path d="M8.5 18h7"/><path d="M9 20.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5V19H9z"/></svg>,
-  Coffee:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>,
-  Sun:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>,
-  Coins:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>,
-  Shield:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>,
-  Settings:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>,
-  Lock:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
-  X:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-  Plus:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
-  Trash:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>,
-  Save:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>,
-  LogOut:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>,
-  ExternalLink:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-  MapPin:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
-  Banknote:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h0M18 12h0"/></svg>,
-  Plane:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>,
-  Image:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>,
-  Video:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>,
-  MessageCircle:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
-  ArrowUpRight:(cn)=><svg className={cn} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>,
+  User:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"}), React.createElement('circle', {cx: "12", cy: "7", r: "4"})),
+  Target:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('circle', {cx: "12", cy: "12", r: "10"}), React.createElement('circle', {cx: "12", cy: "12", r: "6"}), React.createElement('circle', {cx: "12", cy: "12", r: "2"})),
+  Heart:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"})),
+  Calendar:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('rect', {x: "3", y: "4", width: "18", height: "18", rx: "2", ry: "2"}), React.createElement('line', {x1: "16", y1: "2", x2: "16", y2: "6"}), React.createElement('line', {x1: "8", y1: "2", x2: "8", y2: "6"}), React.createElement('line', {x1: "3", y1: "10", x2: "21", y2: "10"})),
+  Globe:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('circle', {cx: "12", cy: "12", r: "10"}), React.createElement('line', {x1: "2", y1: "12", x2: "22", y2: "12"}), React.createElement('path', {d: "M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"})),
+  Sparkles:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063A2 2 0 0 0 14.063 15.5l-1.582 6.135a.5.5 0 0 1-.963 0z"})),
+  Star:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('polygon', {points: "12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"})),
+  ScrollText:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M15 12h-5"}), React.createElement('path', {d: "M15 8h-5"}), React.createElement('path', {d: "M19 17V5a2 2 0 0 0-2-2H4"}), React.createElement('path', {d: "M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 0 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"})),
+  Clock:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('circle', {cx: "12", cy: "12", r: "10"}), React.createElement('polyline', {points: "12 6 12 12 16 14"})),
+  FileText:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"}), React.createElement('path', {d: "M14 2v4a2 2 0 0 0 2 2h4"}), React.createElement('path', {d: "M10 9H8"}), React.createElement('path', {d: "M16 13H8"}), React.createElement('path', {d: "M16 17H8"})),
+  ChevronRight:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "m9 18 6-6-6-6"})),
+  BookOpen:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"}), React.createElement('path', {d: "M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"})),
+  BookMarked:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"}), React.createElement('polyline', {points: "10 2 10 10 13 7 16 10 16 2"})),
+  TrendingUp:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('polyline', {points: "22 7 13.5 15.5 8.5 10.5 2 17"}), React.createElement('polyline', {points: "16 7 22 7 22 13"})),
+  Library:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M16 6 4 6"}), React.createElement('path', {d: "M12 18 12 6"}), React.createElement('path', {d: "M20 6 18 6"}), React.createElement('path', {d: "M8 18 4 6"}), React.createElement('path', {d: "m16 18 4-12"}), React.createElement('path', {d: "M4 22 20 22"})),
+  Baby:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M9 12h.01"}), React.createElement('path', {d: "M15 12h.01"}), React.createElement('path', {d: "M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"}), React.createElement('path', {d: "M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.8.7 5.2 1.8"}), React.createElement('path', {d: "M16 2s0 2 2 2 2-2 2-2"})),
+  Home:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"}), React.createElement('polyline', {points: "9 22 9 12 15 12 15 22"})),
+  Lightbulb:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5C7.7 12.8 8 14.5 8 16"}), React.createElement('path', {d: "M8.5 18h7"}), React.createElement('path', {d: "M9 20.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5V19H9z"})),
+  Coffee:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M17 8h1a4 4 0 1 1 0 8h-1"}), React.createElement('path', {d: "M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"}), React.createElement('line', {x1: "6", y1: "2", x2: "6", y2: "4"}), React.createElement('line', {x1: "10", y1: "2", x2: "10", y2: "4"}), React.createElement('line', {x1: "14", y1: "2", x2: "14", y2: "4"})),
+  Sun:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('circle', {cx: "12", cy: "12", r: "4"}), React.createElement('path', {d: "M12 2v2"}), React.createElement('path', {d: "M12 20v2"}), React.createElement('path', {d: "m4.93 4.93 1.41 1.41"}), React.createElement('path', {d: "m17.66 17.66 1.41 1.41"}), React.createElement('path', {d: "M2 12h2"}), React.createElement('path', {d: "M20 12h2"}), React.createElement('path', {d: "m6.34 17.66-1.41 1.41"}), React.createElement('path', {d: "m19.07 4.93-1.41 1.41"})),
+  Coins:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('circle', {cx: "8", cy: "8", r: "6"}), React.createElement('path', {d: "M18.09 10.37A6 6 0 1 1 10.34 18"}), React.createElement('path', {d: "M7 6h1v4"}), React.createElement('path', {d: "m16.71 13.88.7.71-2.82 2.82"})),
+  Shield:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"})),
+  Settings:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('circle', {cx: "12", cy: "12", r: "3"}), React.createElement('path', {d: "M12 1v2"}), React.createElement('path', {d: "M12 21v2"}), React.createElement('path', {d: "M4.22 4.22l1.42 1.42"}), React.createElement('path', {d: "M18.36 18.36l1.42 1.42"}), React.createElement('path', {d: "M1 12h2"}), React.createElement('path', {d: "M21 12h2"}), React.createElement('path', {d: "M4.22 19.78l1.42-1.42"}), React.createElement('path', {d: "M18.36 5.64l1.42-1.42"})),
+  Lock:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('rect', {x: "3", y: "11", width: "18", height: "11", rx: "2", ry: "2"}), React.createElement('path', {d: "M7 11V7a5 5 0 0 1 10 0v4"})),
+  X:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('line', {x1: "18", y1: "6", x2: "6", y2: "18"}), React.createElement('line', {x1: "6", y1: "6", x2: "18", y2: "18"})),
+  Plus:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('line', {x1: "12", y1: "5", x2: "12", y2: "19"}), React.createElement('line', {x1: "5", y1: "12", x2: "19", y2: "12"})),
+  Trash:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M3 6h18"}), React.createElement('path', {d: "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"}), React.createElement('path', {d: "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"})),
+  Save:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"}), React.createElement('polyline', {points: "17 21 17 13 7 13 7 21"}), React.createElement('polyline', {points: "7 3 7 8 15 8"})),
+  LogOut:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"}), React.createElement('polyline', {points: "16 17 21 12 16 7"}), React.createElement('line', {x1: "21", y1: "12", x2: "9", y2: "12"})),
+  ExternalLink:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"}), React.createElement('polyline', {points: "15 3 21 3 21 9"}), React.createElement('line', {x1: "10", y1: "14", x2: "21", y2: "3"})),
+  MapPin:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"}), React.createElement('circle', {cx: "12", cy: "10", r: "3"})),
+  Banknote:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('rect', {x: "2", y: "6", width: "20", height: "12", rx: "2"}), React.createElement('circle', {cx: "12", cy: "12", r: "2"}), React.createElement('path', {d: "M6 12h0M18 12h0"})),
+  Plane:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"})),
+  Image:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('rect', {x: "3", y: "3", width: "18", height: "18", rx: "2", ry: "2"}), React.createElement('circle', {cx: "8.5", cy: "8.5", r: "1.5"}), React.createElement('polyline', {points: "21 15 16 10 5 21"})),
+  Video:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('polygon', {points: "23 7 16 12 23 17 23 7"}), React.createElement('rect', {x: "1", y: "5", width: "15", height: "14", rx: "2", ry: "2"})),
+  MessageCircle:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"})),
+  ArrowUpRight:(cn)=>React.createElement('svg', {className: {cn}, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('line', {x1: "7", y1: "17", x2: "17", y2: "7"}), React.createElement('polyline', {points: "7 7 17 7 17 17"})),
 };
 const iconList=["Baby","Home","Lightbulb","Coffee","Heart","Sun","BookOpen","Target","TrendingUp","Globe","Coins","FileText","ScrollText","Star","Shield","MapPin","Banknote","Plane","MessageCircle"];
 
@@ -216,47 +216,7 @@ function App(){
   useEffect(()=>{const h=()=>{const s=window.scrollY,d=document.documentElement.scrollHeight-window.innerHeight;setScrolled(d>0?s/d*100:0)};window.addEventListener("scroll",h);return()=>window.removeEventListener("scroll",h)},[]);
   useEffect(()=>{safeLS(()=>localStorage.setItem(STORAGE_KEY,JSON.stringify(sd)),null)},[sd]);
 
-  const upd=(path,val)=>{setSd(p=>{const c=JSON.parse(JSON.stringify(p));let o=c;for(let i=0;i<path.length-1;i++)o=o[path[i]];o[path[path.length-1]]=val;return c})};
-  const show=(msg)=>{setToast(msg);setTimeout(()=>setToast(""),2000)};
-
-  const nav=sd.settings.nav;
-  const d=sd;
-
-  // Image upload handler
-  const handleImgUpload=(path)=>(e)=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>upd(path,r.result);r.readAsDataURL(f)};
-
-  // ===== ADMIN LOGIN =====
-  if(admin&&!authed)return(
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={()=>setAdmin(false)}>
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm animate-fade-in" onClick={e=>e.stopPropagation()}>
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center">{I.Lock("w-6 h-6 text-amber-600")}</div>
-          <div><h3 className="font-serif text-xl text-stone-800">管理后台</h3><p className="text-xs text-stone-400">请输入密码进入编辑模式</p></div>
-        </div>
-        <form onSubmit={e=>{e.preventDefault();if(pwd===ADMIN_PWD){setAuthed(true);setPwdErr(false)}else setPwdErr(true)}}>
-          <input type="password" value={pwd} onChange={e=>{setPwd(e.target.value);setPwdErr(false)}} placeholder="输入管理员密码" autoFocus
-            className="w-full border border-stone-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200 focus:border-amber-400" />
-          {pwdErr&&<p className="text-red-500 text-xs mt-1">密码错误</p>}
-          <button type="submit" className="mt-4 w-full bg-amber-600 hover:bg-amber-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors">进入管理后台</button>
-        </form>
-      </div>
-    </div>
-  );
-
-  // ===== ADMIN DASHBOARD (Full screen) =====
-  if(admin&&authed)return(
-    <div className="min-h-screen bg-stone-50 admin-panel">
-      {/* Admin header */}
-      <div className="sticky top-0 z-10 bg-white border-b border-stone-200 px-4 sm:px-8 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">{I.Settings("w-4 h-4 text-amber-600")}</div>
-          <span className="font-serif text-base text-stone-700">管理后台</span>
-          <span className="text-xs text-stone-400">| 所有修改实时自动保存</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <button onClick={()=>{navigator.clipboard.writeText(JSON.stringify(sd,null,2)).then(()=>show("✅ 数据已复制到剪贴板！粘贴发给 Claude 嵌入为默认数据")).catch(()=>alert("复制失败，请手动复制：\n"+JSON.stringify(sd)))}}
-            className="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg transition-colors">📋 导出数据</button>
-          <button onClick={()=>{
+  const upd=(path,val)=>{setSd(p=>{const c=JSON.parse(JSON.stringify(p));let o=c;for(let i=0;iReact.createElement('path.length', null, '-1;i++)o=o[path[i]];o[path[path.length-1]]=val;return c})};\n  const show=(msg)=>', setToast(msg);setTimeout(()=>setToast(""),2000), ';\n\n  const nav=sd.settings.nav;\n  const d=sd;\n\n  // Image upload handler\n  const handleImgUpload=(path)=>(e)=>', const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>upd(path,r.result);r.readAsDataURL(f), ';\n\n  // ===== ADMIN LOGIN =====\n  if(admin&&!authed)return(\n    ', React.createElement('div', {className: "fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4", onClick: {()=>setAdmin(false)}}, React.createElement('div', {className: "bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm animate-fade-in", onClick: {e=>e.stopPropagation()}}, React.createElement('div', {className: "flex items-center gap-3 mb-6"}, React.createElement('div', {className: "w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center"}, I.Lock("w-6 h-6 text-amber-600")), React.createElement('div', null, React.createElement('h3', {className: "font-serif text-xl text-stone-800"}, '管理后台'), React.createElement('p', {className: "text-xs text-stone-400"}, '请输入密码进入编辑模式'))), React.createElement('form', {onSubmit: {e=>{e.preventDefault();if(pwd===ADMIN_PWD){setAuthed(true);setPwdErr(false)}else setPwdErr(true)}}}, React.createElement('input', {type: "password", value: {pwd}, onChange: {e=>{setPwd(e.target.value);setPwdErr(false)}}, placeholder: "输入管理员密码", autoFocus: true, className: "w-full border border-stone-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200 focus:border-amber-400"}), pwdErr&&<p className="text-red-500 text-xs mt-1">密码错误</p>, React.createElement('button', {type: "submit", className: "mt-4 w-full bg-amber-600 hover:bg-amber-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors"}, '进入管理后台')))), '\n  );\n\n  // ===== ADMIN DASHBOARD (Full screen) =====\n  if(admin&&authed)return(\n    ', React.createElement('div', {className: "min-h-screen bg-stone-50 admin-panel"}, React.createElement('div', {className: "sticky top-0 z-10 bg-white border-b border-stone-200 px-4 sm:px-8 py-3 flex items-center justify-between"}, React.createElement('div', {className: "flex items-center gap-3"}, React.createElement('div', {className: "w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center"}, I.Settings("w-4 h-4 text-amber-600")), React.createElement('span', {className: "font-serif text-base text-stone-700"}, '管理后台'), React.createElement('span', {className: "text-xs text-stone-400"}, '| 所有修改实时自动保存')), React.createElement('div', {className: "flex items-center gap-2"}, React.createElement('button', {onClick: {()=>{navigator.clipboard.writeText(JSON.stringify(sd,null,2)).then(()=>show("✅ 数据已复制到剪贴板！粘贴发给 Claude 嵌入为默认数据")).catch(()=>alert("复制失败，请手动复制：\n"+JSON.stringify(sd)))}}, className: "text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg transition-colors"}, '📋 导出数据'), React.createElement('button', {onClick: {()=>{
       var cfg=getGHSettings();
       if(!cfg.token||!cfg.owner||!cfg.repo){show("请先在「发布设置」中配置 GitHub 信息");setTimeout(()=>{var s=document.getElementById("publish-section");if(s)s.scrollIntoView({behavior:"smooth"})},500);return}
       show("⏳ 正在发布到云端...");
@@ -264,71 +224,7 @@ function App(){
         if(err){show("❌ "+err)}
         else{show("✅ 发布成功！约 30 秒后生效。")}
       });
-    }}
-    className="text-xs bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded-lg transition-colors">🚀 发布到云端</button>
-          
-          <button onClick={()=>{setSd(JSON.parse(JSON.stringify(D())));show("已重置为默认")}}
-            className="text-xs text-stone-400 hover:text-red-500 transition-colors px-3 py-1.5 border border-stone-200 rounded-lg">重置默认</button>
-          <button onClick={()=>{setAdmin(false);setAuthed(false)}}
-            className="text-xs bg-amber-600 hover:bg-amber-700 text-white px-4 py-1.5 rounded-lg transition-colors">退出后台 · 预览网站</button>
-        </div>
-      </div>
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 py-6 space-y-8 pb-20">
-        {/* Site Settings */}
-        <Section title="⚙️ 网站设置">
-          <Row label="博客标题"><input value={d.settings.blogTitle} onChange={e=>upd(["settings","blogTitle"],e.target.value)} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"/></Row>
-          <Row label="页脚文字"><textarea value={d.settings.footer} onChange={e=>upd(["settings","footer"],e.target.value)} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm" rows={2}/></Row>
-          <Row label="导航栏（每行一个: 显示名|锚点）">
-            <div className="flex flex-wrap gap-2">{d.settings.nav.map((n,i)=><span key={i} className="inline-flex items-center gap-1 bg-white border border-stone-200 rounded-full px-3 py-1 text-xs"><input value={n.label} onChange={e=>{const c=[...d.settings.nav];c[i]={...c[i],label:e.target.value};upd(["settings","nav"],c)}} className="w-12 focus:outline-none"/><span className="text-stone-300">|</span><input value={n.anchor} onChange={e=>{const c=[...d.settings.nav];c[i]={...c[i],anchor:e.target.value};upd(["settings","nav"],c)}} className="w-12 focus:outline-none"/><button onClick={()=>upd(["settings","nav"],d.settings.nav.filter((_,j)=>j!==i))} className="text-red-400 hover:text-red-600">{I.X("w-3 h-3")}</button></span>)}
-              <button onClick={()=>upd(["settings","nav"],[...d.settings.nav,{label:"新页",anchor:"new"}])} className="text-amber-600 text-xs flex items-center gap-0.5">{I.Plus("w-3 h-3")}添加</button>
-            </div>
-          </Row>
-        </Section>
-
-        {/* Hero */}
-        <Section title="🖼️ Hero 区">
-          <Row label="头像">
-            <div className="flex items-center gap-3">
-              <div className="w-16 h-16 rounded-full bg-stone-200 overflow-hidden flex-shrink-0">{d.avatar?<img src={d.avatar} className="w-full h-full object-cover"/>:I.User("w-8 h-8 text-stone-400 m-auto mt-4")}</div>
-              <label className="text-xs text-amber-600 cursor-pointer hover:text-amber-700">上传头像<input type="file" accept="image/*" onChange={handleImgUpload(["avatar"])} className="hidden"/></label>
-              {d.avatar&&<button onClick={()=>upd(["avatar"],"")} className="text-xs text-red-400 hover:text-red-600">清除</button>}
-            </div>
-          </Row>
-          <Row label="Slogan 前半"><input value={d.hero.slogan1} onChange={e=>upd(["hero","slogan1"],e.target.value)} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"/></Row>
-          <Row label="Slogan 后半（高亮色）"><input value={d.hero.slogan2} onChange={e=>upd(["hero","slogan2"],e.target.value)} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"/></Row>
-          <Row label="副标题"><input value={d.hero.subtitle} onChange={e=>upd(["hero","subtitle"],e.target.value)} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"/></Row>
-          <Row label="描述"><textarea value={d.hero.desc} onChange={e=>upd(["hero","desc"],e.target.value)} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm" rows={3}/></Row>
-          <Row label="标签（每行一个）">
-            {d.hero.tags.map((t,i)=><div key={i} className="flex items-center gap-1 mb-1"><input value={t} onChange={e=>{const c=[...d.hero.tags];c[i]=e.target.value;upd(["hero","tags"],c)}} className="flex-1 border border-stone-200 rounded-lg px-3 py-1.5 text-xs"/><button onClick={()=>upd(["hero","tags"],d.hero.tags.filter((_,j)=>j!==i))} className="text-red-400">{I.X("w-3 h-3")}</button></div>)}
-            <button onClick={()=>upd(["hero","tags"],[...d.hero.tags,"新标签"])} className="text-amber-600 text-xs flex items-center gap-0.5">{I.Plus("w-3 h-3")}添加标签</button>
-          </Row>
-        </Section>
-
-        {/* 港卡专题 */}
-        <Section title="🏦 港卡专题区">
-          <Row label="标题"><input value={d.hkSpecial.title} onChange={e=>upd(["hkSpecial","title"],e.target.value)} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"/></Row>
-          <Row label="描述"><textarea value={d.hkSpecial.desc} onChange={e=>upd(["hkSpecial","desc"],e.target.value)} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm" rows={2}/></Row>
-          <Row label="统计数据（每行: 标签|数值）">
-            {d.hkSpecial.stats.map((s,i)=><div key={i} className="flex items-center gap-1 mb-1"><input value={s.label} onChange={e=>{const c=[...d.hkSpecial.stats];c[i]={...c[i],label:e.target.value};upd(["hkSpecial","stats"],c)}} className="flex-1 border border-stone-200 rounded px-2 py-1 text-xs" placeholder="标签"/><input value={s.value} onChange={e=>{const c=[...d.hkSpecial.stats];c[i]={...c[i],value:e.target.value};upd(["hkSpecial","stats"],c)}} className="w-24 border border-stone-200 rounded px-2 py-1 text-xs" placeholder="数值"/><button onClick={()=>upd(["hkSpecial","stats"],d.hkSpecial.stats.filter((_,j)=>j!==i))} className="text-red-400">{I.X("w-3 h-3")}</button></div>)}
-            <button onClick={()=>upd(["hkSpecial","stats"],[...d.hkSpecial.stats,{label:"新指标",value:"0"}])} className="text-amber-600 text-xs flex items-center gap-0.5">{I.Plus("w-3 h-3")}添加</button>
-          </Row>
-          <Row label="视频嵌入 URL（B站/YouTube 分享链接）"><input value={d.hkSpecial.videoUrl} onChange={e=>upd(["hkSpecial","videoUrl"],e.target.value)} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm" placeholder="https://www.bilibili.com/video/..."/></Row>
-        </Section>
-
-        {/* Featured */}
-        <Section title="⭐ 精选推荐">
-          <Row label="封面图"><div className="flex items-center gap-3">{d.featured.cover?<img src={d.featured.cover} className="h-16 rounded border"/>:null}<label className="text-xs text-amber-600 cursor-pointer">上传图片<input type="file" accept="image/*" onChange={handleImgUpload(["featured","cover"])} className="hidden"/></label>{d.featured.cover?<button onClick={()=>upd(["featured","cover"],"")} className="text-xs text-red-400">清除</button>:null}</div></Row>
-          <Row label="标题"><textarea value={d.featured.title} onChange={e=>upd(["featured","title"],e.target.value)} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm" rows={2}/></Row>
-          <Row label="描述"><textarea value={d.featured.desc} onChange={e=>upd(["featured","desc"],e.target.value)} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm" rows={4}/></Row>
-          <Row label="标签（逗号分隔）"><input value={d.featured.tags.join(",")} onChange={e=>upd(["featured","tags"],e.target.value.split(",").map(s=>s.trim()))} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"/></Row>
-          <Row label="日期"><input value={d.featured.date} onChange={e=>upd(["featured","date"],e.target.value)} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"/></Row>
-          <Row label="字数"><input value={d.featured.wordCount} onChange={e=>upd(["featured","wordCount"],e.target.value)} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"/></Row>
-          <Row label="文章链接"><input value={d.featured.link} onChange={e=>upd(["featured","link"],e.target.value)} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm" placeholder="https://... 留空则点击预览占位内容"/></Row>
-        </Section>
-
-        {/* Timeline */}
-        <Section title="📜 时间轴">
-          {d.timeline.map((t,i)=><div key={i} className="bg-white border border-stone-200 rounded-xl p-4 space-y-2 mb-3">
+    }}, className: "text-xs bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded-lg transition-colors"}, '🚀 发布到云端'), React.createElement('button', {onClick: {()=>{setSd(JSON.parse(JSON.stringify(D())));show("已重置为默认")}}, className: "text-xs text-stone-400 hover:text-red-500 transition-colors px-3 py-1.5 border border-stone-200 rounded-lg"}, '重置默认'), React.createElement('button', {onClick: {()=>{setAdmin(false);setAuthed(false)}}, className: "text-xs bg-amber-600 hover:bg-amber-700 text-white px-4 py-1.5 rounded-lg transition-colors"}, '退出后台 · 预览网站'))), React.createElement('div', {className: "max-w-6xl mx-auto px-4 sm:px-8 py-6 space-y-8 pb-20"}, React.createElement(Section, {title: "⚙️ 网站设置"}, React.createElement(Row, {label: "博客标题"}, React.createElement('input', {value: {d.settings.blogTitle}, onChange: {e=>upd(["settings","blogTitle"],e.target.value)}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"})), React.createElement(Row, {label: "页脚文字"}, React.createElement('textarea', {value: {d.settings.footer}, onChange: {e=>upd(["settings","footer"],e.target.value)}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm", rows: {2}})), React.createElement(Row, {label: "导航栏（每行一个: 显示名|锚点）"}, React.createElement('div', {className: "flex flex-wrap gap-2"}, d.settings.nav.map((n,i)=><span key={i} className="inline-flex items-center gap-1 bg-white border border-stone-200 rounded-full px-3 py-1 text-xs"><input value={n.label} onChange={e=>{const c=[...d.settings.nav];c[i]={...c[i],label:e.target.value};upd(["settings","nav"],c)}} className="w-12 focus:outline-none"/><span className="text-stone-300">|</span><input value={n.anchor} onChange={e=>{const c=[...d.settings.nav];c[i]={...c[i],anchor:e.target.value};upd(["settings","nav"],c)}} className="w-12 focus:outline-none"/><button onClick={()=>upd(["settings","nav"],d.settings.nav.filter((_,j)=>j!==i))} className="text-red-400 hover:text-red-600">{I.X("w-3 h-3")}</button></span>), React.createElement('button', {onClick: {()=>upd(["settings","nav"],[...d.settings.nav,{label:"新页",anchor:"new"}])}, className: "text-amber-600 text-xs flex items-center gap-0.5"}, I.Plus("w-3 h-3"), '添加')))), React.createElement(Section, {title: "🖼️ Hero 区"}, React.createElement(Row, {label: "头像"}, React.createElement('div', {className: "flex items-center gap-3"}, React.createElement('div', {className: "w-16 h-16 rounded-full bg-stone-200 overflow-hidden flex-shrink-0"}, d.avatar?<img src={d.avatar} className="w-full h-full object-cover"/>:I.User("w-8 h-8 text-stone-400 m-auto mt-4")), React.createElement('label', {className: "text-xs text-amber-600 cursor-pointer hover:text-amber-700"}, '上传头像', React.createElement('input', {type: "file", accept: "image/*", onChange: {handleImgUpload(["avatar"])}, className: "hidden"})), d.avatar&&<button onClick={()=>upd(["avatar"],"")} className="text-xs text-red-400 hover:text-red-600">清除</button>)), React.createElement(Row, {label: "Slogan 前半"}, React.createElement('input', {value: {d.hero.slogan1}, onChange: {e=>upd(["hero","slogan1"],e.target.value)}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"})), React.createElement(Row, {label: "Slogan 后半（高亮色）"}, React.createElement('input', {value: {d.hero.slogan2}, onChange: {e=>upd(["hero","slogan2"],e.target.value)}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"})), React.createElement(Row, {label: "副标题"}, React.createElement('input', {value: {d.hero.subtitle}, onChange: {e=>upd(["hero","subtitle"],e.target.value)}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"})), React.createElement(Row, {label: "描述"}, React.createElement('textarea', {value: {d.hero.desc}, onChange: {e=>upd(["hero","desc"],e.target.value)}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm", rows: {3}})), React.createElement(Row, {label: "标签（每行一个）"}, d.hero.tags.map((t,i)=><div key={i} className="flex items-center gap-1 mb-1"><input value={t} onChange={e=>{const c=[...d.hero.tags];c[i]=e.target.value;upd(["hero","tags"],c)}} className="flex-1 border border-stone-200 rounded-lg px-3 py-1.5 text-xs"/><button onClick={()=>upd(["hero","tags"],d.hero.tags.filter((_,j)=>j!==i))} className="text-red-400">{I.X("w-3 h-3")}</button></div>), React.createElement('button', {onClick: {()=>upd(["hero","tags"],[...d.hero.tags,"新标签"])}, className: "text-amber-600 text-xs flex items-center gap-0.5"}, I.Plus("w-3 h-3"), '添加标签'))), React.createElement(Section, {title: "🏦 港卡专题区"}, React.createElement(Row, {label: "标题"}, React.createElement('input', {value: {d.hkSpecial.title}, onChange: {e=>upd(["hkSpecial","title"],e.target.value)}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"})), React.createElement(Row, {label: "描述"}, React.createElement('textarea', {value: {d.hkSpecial.desc}, onChange: {e=>upd(["hkSpecial","desc"],e.target.value)}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm", rows: {2}})), React.createElement(Row, {label: "统计数据（每行: 标签|数值）"}, d.hkSpecial.stats.map((s,i)=><div key={i} className="flex items-center gap-1 mb-1"><input value={s.label} onChange={e=>{const c=[...d.hkSpecial.stats];c[i]={...c[i],label:e.target.value};upd(["hkSpecial","stats"],c)}} className="flex-1 border border-stone-200 rounded px-2 py-1 text-xs" placeholder="标签"/><input value={s.value} onChange={e=>{const c=[...d.hkSpecial.stats];c[i]={...c[i],value:e.target.value};upd(["hkSpecial","stats"],c)}} className="w-24 border border-stone-200 rounded px-2 py-1 text-xs" placeholder="数值"/><button onClick={()=>upd(["hkSpecial","stats"],d.hkSpecial.stats.filter((_,j)=>j!==i))} className="text-red-400">{I.X("w-3 h-3")}</button></div>), React.createElement('button', {onClick: {()=>upd(["hkSpecial","stats"],[...d.hkSpecial.stats,{label:"新指标",value:"0"}])}, className: "text-amber-600 text-xs flex items-center gap-0.5"}, I.Plus("w-3 h-3"), '添加')), React.createElement(Row, {label: "视频嵌入 URL（B站/YouTube 分享链接）"}, React.createElement('input', {value: {d.hkSpecial.videoUrl}, onChange: {e=>upd(["hkSpecial","videoUrl"],e.target.value)}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm", placeholder: "https://www.bilibili.com/video/..."}))), React.createElement(Section, {title: "⭐ 精选推荐"}, React.createElement(Row, {label: "封面图"}, React.createElement('div', {className: "flex items-center gap-3"}, d.featured.cover?<img src={d.featured.cover} className="h-16 rounded border"/>:null, React.createElement('label', {className: "text-xs text-amber-600 cursor-pointer"}, '上传图片', React.createElement('input', {type: "file", accept: "image/*", onChange: {handleImgUpload(["featured","cover"])}, className: "hidden"})), d.featured.cover?<button onClick={()=>upd(["featured","cover"],"")} className="text-xs text-red-400">清除</button>:null)), React.createElement(Row, {label: "标题"}, React.createElement('textarea', {value: {d.featured.title}, onChange: {e=>upd(["featured","title"],e.target.value)}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm", rows: {2}})), React.createElement(Row, {label: "描述"}, React.createElement('textarea', {value: {d.featured.desc}, onChange: {e=>upd(["featured","desc"],e.target.value)}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm", rows: {4}})), React.createElement(Row, {label: "标签（逗号分隔）"}, React.createElement('input', {value: {d.featured.tags.join(",")}, onChange: {e=>upd(["featured","tags"],e.target.value.split(",").map(s=>s.trim()))}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"})), React.createElement(Row, {label: "日期"}, React.createElement('input', {value: {d.featured.date}, onChange: {e=>upd(["featured","date"],e.target.value)}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"})), React.createElement(Row, {label: "字数"}, React.createElement('input', {value: {d.featured.wordCount}, onChange: {e=>upd(["featured","wordCount"],e.target.value)}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm"})), React.createElement(Row, {label: "文章链接"}, React.createElement('input', {value: {d.featured.link}, onChange: {e=>upd(["featured","link"],e.target.value)}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm", placeholder: "https://... 留空则点击预览占位内容"}))), React.createElement(Section, {title: "📜 时间轴"}, d.timeline.map((t,i)=><div key={i} className="bg-white border border-stone-200 rounded-xl p-4 space-y-2 mb-3">
             <div className="flex items-center justify-between"><span className="text-xs text-stone-400 font-mono">#{i+1}</span><button onClick={()=>upd(["timeline"],d.timeline.filter((_,j)=>j!==i))} className="text-red-400 hover:text-red-600">{I.Trash("w-3.5 h-3.5")}</button></div>
             <div className="flex gap-2"><select value={t.type} onChange={e=>{const c=[...d.timeline];c[i]={...c[i],type:e.target.value};upd(["timeline"],c)}}
               className="w-28 border border-stone-200 rounded px-2 py-1 text-xs"><option value="finance">💰 财务决策</option><option value="side">🛠️ 副业尝试</option></select>
@@ -336,66 +232,26 @@ function App(){
             <input value={t.title} onChange={e=>{const c=[...d.timeline];c[i]={...c[i],title:e.target.value};upd(["timeline"],c)}} className="w-full border border-stone-200 rounded px-3 py-1.5 text-sm" placeholder="标题"/>
             <textarea value={t.desc} onChange={e=>{const c=[...d.timeline];c[i]={...c[i],desc:e.target.value};upd(["timeline"],c)}} className="w-full border border-stone-200 rounded px-3 py-1.5 text-sm" rows={2} placeholder="描述"/>
             <input value={t.link||""} onChange={e=>{const c=[...d.timeline];c[i]={...c[i],link:e.target.value};upd(["timeline"],c)}} className="w-full border border-stone-200 rounded px-3 py-1.5 text-xs" placeholder="链接 (可选)"/>
-          </div>)}
-          <button onClick={()=>upd(["timeline"],[...d.timeline,{type:"finance",title:"新条目",desc:"",date:"2025.01",link:""}])} className="text-amber-600 text-sm flex items-center gap-1">{I.Plus("w-4 h-4")}添加条目</button>
-        </Section>
-
-        {/* Thoughts */}
-        <Section title="💭 感悟卡片">
-          <div className="grid sm:grid-cols-2 gap-3">{d.thoughts.map((t,i)=><div key={i} className="bg-white border border-stone-200 rounded-xl p-4 space-y-2">
+          </div>), React.createElement('button', {onClick: {()=>upd(["timeline"],[...d.timeline,{type:"finance",title:"新条目",desc:"",date:"2025.01",link:""}])}, className: "text-amber-600 text-sm flex items-center gap-1"}, I.Plus("w-4 h-4"), '添加条目')), React.createElement(Section, {title: "💭 感悟卡片"}, React.createElement('div', {className: "grid sm:grid-cols-2 gap-3"}, d.thoughts.map((t,i)=><div key={i} className="bg-white border border-stone-200 rounded-xl p-4 space-y-2">
             <div className="flex items-center justify-between"><span className="text-xs text-stone-400">#{i+1}</span><button onClick={()=>upd(["thoughts"],d.thoughts.filter((_,j)=>j!==i))} className="text-red-400">{I.Trash("w-3.5 h-3.5")}</button></div>
             <div className="flex gap-2"><select value={t.icon} onChange={e=>{const c=[...d.thoughts];c[i]={...c[i],icon:e.target.value};upd(["thoughts"],c)}} className="flex-1 border border-stone-200 rounded px-2 py-1 text-xs">{iconList.map(n=><option key={n} value={n}>{n}</option>)}</select><input value={t.tag} onChange={e=>{const c=[...d.thoughts];c[i]={...c[i],tag:e.target.value};upd(["thoughts"],c)}} className="w-20 border border-stone-200 rounded px-2 py-1 text-xs"/></div>
             <textarea value={t.text} onChange={e=>{const c=[...d.thoughts];c[i]={...c[i],text:e.target.value};upd(["thoughts"],c)}} className="w-full border border-stone-200 rounded px-3 py-1.5 text-xs" rows={2}/>
             <input value={t.date} onChange={e=>{const c=[...d.thoughts];c[i]={...c[i],date:e.target.value};upd(["thoughts"],c)}} className="w-full border border-stone-200 rounded px-2 py-1 text-xs"/>
-          </div>)}</div>
-          <button onClick={()=>upd(["thoughts"],[...d.thoughts,{icon:"Coffee",tag:"新",text:"内容...",date:"2025.01.01"}])} className="mt-2 text-amber-600 text-sm flex items-center gap-1">{I.Plus("w-4 h-4")}添加卡片</button>
-        </Section>
-
-        {/* Bookshelf */}
-        <Section title="📚 书架 & 工具">
-          <div className="grid sm:grid-cols-2 gap-3">{d.books.map((b,i)=><div key={i} className="bg-white border border-stone-200 rounded-xl p-4 space-y-2">
+          </div>)), React.createElement('button', {onClick: {()=>upd(["thoughts"],[...d.thoughts,{icon:"Coffee",tag:"新",text:"内容...",date:"2025.01.01"}])}, className: "mt-2 text-amber-600 text-sm flex items-center gap-1"}, I.Plus("w-4 h-4"), '添加卡片')), React.createElement(Section, {title: "📚 书架 & 工具"}, React.createElement('div', {className: "grid sm:grid-cols-2 gap-3"}, d.books.map((b,i)=><div key={i} className="bg-white border border-stone-200 rounded-xl p-4 space-y-2">
             <div className="flex items-center justify-between"><span className="text-xs text-stone-400">#{i+1}</span><button onClick={()=>upd(["books"],d.books.filter((_,j)=>j!==i))} className="text-red-400">{I.Trash("w-3.5 h-3.5")}</button></div>
             <div className="flex gap-2 items-center">{b.cover?<img src={b.cover} className="w-10 h-14 rounded object-cover border"/>:null}<label className="text-xs text-amber-600 cursor-pointer">封面上传<input type="file" accept="image/*" onChange={e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const c=[...d.books];c[i]={...c[i],cover:r.result};upd(["books"],c)};r.readAsDataURL(f)}} className="hidden"/></label></div>
             <input value={b.title} onChange={e=>{const c=[...d.books];c[i]={...c[i],title:e.target.value};upd(["books"],c)}} className="w-full border border-stone-200 rounded px-3 py-1.5 text-sm" placeholder="书名"/>
             <input value={b.author} onChange={e=>{const c=[...d.books];c[i]={...c[i],author:e.target.value};upd(["books"],c)}} className="w-full border border-stone-200 rounded px-3 py-1.5 text-sm" placeholder="作者"/>
             <input value={b.quote} onChange={e=>{const c=[...d.books];c[i]={...c[i],quote:e.target.value};upd(["books"],c)}} className="w-full border border-stone-200 rounded px-3 py-1.5 text-sm" placeholder="金句"/>
             <input value={b.link||""} onChange={e=>{const c=[...d.books];c[i]={...c[i],link:e.target.value};upd(["books"],c)}} className="w-full border border-stone-200 rounded px-2 py-1 text-xs" placeholder="购买链接 (可选)"/>
-          </div>)}</div>
-          <button onClick={()=>upd(["books"],[...d.books,{title:"新书",author:"作者",quote:"金句",link:"",cover:""}])} className="mt-2 text-amber-600 text-sm flex items-center gap-1">{I.Plus("w-4 h-4")}添加书籍</button>
-          <div className="mt-6"><h4 className="text-sm font-medium text-stone-600 mb-2">常用工具</h4>{d.tools.map((t,i)=><div key={i} className="flex items-center gap-1 mb-1"><input value={t.name} onChange={e=>{const c=[...d.tools];c[i]={...c[i],name:e.target.value};upd(["tools"],c)}} className="flex-1 border border-stone-200 rounded px-2 py-1 text-xs"/><input value={t.url||""} onChange={e=>{const c=[...d.tools];c[i]={...c[i],url:e.target.value};upd(["tools"],c)}} className="flex-1 border border-stone-200 rounded px-2 py-1 text-xs" placeholder="链接"/><button onClick={()=>upd(["tools"],d.tools.filter((_,j)=>j!==i))} className="text-red-400">{I.X("w-3 h-3")}</button></div>)}
-          <button onClick={()=>upd(["tools"],[...d.tools,{name:"新工具",url:"",icon:"BookMarked"}])} className="text-amber-600 text-xs flex items-center gap-0.5">{I.Plus("w-3 h-3")}添加工具</button></div>
-        </Section>
-      {/* GitHub Publish Settings */}
-      <Section title="☁️ 发布设置（GitHub）">
-        <Row label="GitHub Personal Access Token">
-          <div className="flex gap-2">
-            <input id="gh-token" defaultValue={getGHSettings().token} onChange={e=>{var c=getGHSettings();c.token=e.target.value;saveGHSettings(c)}} className="flex-1 border border-stone-200 rounded-lg px-3 py-2 text-sm font-mono" type="password" placeholder="ghp_xxxxxxxxxxxx"/>
-            <a href="https://github.com/settings/tokens" target="_blank" className="text-xs text-amber-600 hover:text-amber-700 whitespace-nowrap self-center">获取 Token →</a>
-          </div>
-          <p className="text-xs text-stone-400 mt-1">需要 <code className="bg-stone-100 px-1 rounded">contents:write</code> 权限。Token 仅保存在此浏览器中。</p>
-        </Row>
-        <Row label="GitHub 仓库所有者"><input id="gh-owner" defaultValue={getGHSettings().owner} onChange={e=>{var c=getGHSettings();c.owner=e.target.value;saveGHSettings(c)}} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm" placeholder="你的 GitHub 用户名"/></Row>
-        <Row label="仓库名称"><input id="gh-repo" defaultValue={getGHSettings().repo} onChange={e=>{var c=getGHSettings();c.repo=e.target.value;saveGHSettings(c)}} className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm" placeholder="my-blog"/></Row>
-        <Row label="分支"><input id="gh-branch" defaultValue={getGHSettings().branch||"main"} onChange={e=>{var c=getGHSettings();c.branch=e.target.value;saveGHSettings(c)}} className="w-40 border border-stone-200 rounded-lg px-3 py-2 text-sm" placeholder="main"/></Row>
-        <p className="text-xs text-stone-400 mt-2">💡 使用流程：编辑内容 → 点击顶部「🚀 发布到云端」→ 等待约 30 秒 → 刷新网站即可看到更新。</p>
-        <button onClick={()=>{
+          </div>)), React.createElement('button', {onClick: {()=>upd(["books"],[...d.books,{title:"新书",author:"作者",quote:"金句",link:"",cover:""}])}, className: "mt-2 text-amber-600 text-sm flex items-center gap-1"}, I.Plus("w-4 h-4"), '添加书籍'), React.createElement('div', {className: "mt-6"}, React.createElement('h4', {className: "text-sm font-medium text-stone-600 mb-2"}, '常用工具'), d.tools.map((t,i)=><div key={i} className="flex items-center gap-1 mb-1"><input value={t.name} onChange={e=>{const c=[...d.tools];c[i]={...c[i],name:e.target.value};upd(["tools"],c)}} className="flex-1 border border-stone-200 rounded px-2 py-1 text-xs"/><input value={t.url||""} onChange={e=>{const c=[...d.tools];c[i]={...c[i],url:e.target.value};upd(["tools"],c)}} className="flex-1 border border-stone-200 rounded px-2 py-1 text-xs" placeholder="链接"/><button onClick={()=>upd(["tools"],d.tools.filter((_,j)=>j!==i))} className="text-red-400">{I.X("w-3 h-3")}</button></div>), React.createElement('button', {onClick: {()=>upd(["tools"],[...d.tools,{name:"新工具",url:"",icon:"BookMarked"}])}, className: "text-amber-600 text-xs flex items-center gap-0.5"}, I.Plus("w-3 h-3"), '添加工具'))), React.createElement(Section, {title: "☁️ 发布设置（GitHub）"}, React.createElement(Row, {label: "GitHub Personal Access Token"}, React.createElement('div', {className: "flex gap-2"}, React.createElement('input', {id: "gh-token", defaultValue: {getGHSettings().token}, onChange: {e=>{var c=getGHSettings();c.token=e.target.value;saveGHSettings(c)}}, className: "flex-1 border border-stone-200 rounded-lg px-3 py-2 text-sm font-mono", type: "password", placeholder: "ghp_xxxxxxxxxxxx"}), React.createElement('a', {href: "https://github.com/settings/tokens", target: "_blank", className: "text-xs text-amber-600 hover:text-amber-700 whitespace-nowrap self-center"}, '获取 Token →')), React.createElement('p', {className: "text-xs text-stone-400 mt-1"}, '需要 ', React.createElement('code', {className: "bg-stone-100 px-1 rounded"}, 'contents:write'), ' 权限。Token 仅保存在此浏览器中。')), React.createElement(Row, {label: "GitHub 仓库所有者"}, React.createElement('input', {id: "gh-owner", defaultValue: {getGHSettings().owner}, onChange: {e=>{var c=getGHSettings();c.owner=e.target.value;saveGHSettings(c)}}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm", placeholder: "你的 GitHub 用户名"})), React.createElement(Row, {label: "仓库名称"}, React.createElement('input', {id: "gh-repo", defaultValue: {getGHSettings().repo}, onChange: {e=>{var c=getGHSettings();c.repo=e.target.value;saveGHSettings(c)}}, className: "w-full border border-stone-200 rounded-lg px-3 py-2 text-sm", placeholder: "my-blog"})), React.createElement(Row, {label: "分支"}, React.createElement('input', {id: "gh-branch", defaultValue: {getGHSettings().branch||"main"}, onChange: {e=>{var c=getGHSettings();c.branch=e.target.value;saveGHSettings(c)}}, className: "w-40 border border-stone-200 rounded-lg px-3 py-2 text-sm", placeholder: "main"})), React.createElement('p', {className: "text-xs text-stone-400 mt-2"}, '💡 使用流程：编辑内容 → 点击顶部「🚀 发布到云端」→ 等待约 30 秒 → 刷新网站即可看到更新。'), React.createElement('button', {onClick: {()=>{
           var cfg=getGHSettings();
           if(!cfg.token||!cfg.owner||!cfg.repo){show("请先填写 Token、仓库所有者和仓库名称");return}
           show("⏳ 正在测试连接...");
           testGHConnection(cfg,function(err,msg){
             if(err)show("❌ "+err);else show(msg);
           });
-        }} className="mt-3 text-xs bg-stone-500 hover:bg-stone-600 text-white px-3 py-1.5 rounded-lg transition-colors">🔍 测试连接</button>
-      </Section>
-      
-            </div>
-      {toast&&<div className="fixed top-4 right-4 z-[100] bg-emerald-600 text-white text-sm px-4 py-2 rounded-lg shadow-lg animate-fade-in">{toast}</div>}
-    </div>
-  );
-
-  // ===== PUBLIC VIEW =====
-  // Article detail view
-  if(view==="article"&&viewArticle){
+        }}, className: "mt-3 text-xs bg-stone-500 hover:bg-stone-600 text-white px-3 py-1.5 rounded-lg transition-colors"}, '🔍 测试连接'))), toast&&<div className="fixed top-4 right-4 z-[100] bg-emerald-600 text-white text-sm px-4 py-2 rounded-lg shadow-lg animate-fade-in">{toast}</div>), '\n  );\n\n  // ===== PUBLIC VIEW =====\n  // Article detail view\n  if(view==="article"&&viewArticle)', 
     const a=viewArticle;
     return(<div className="min-h-screen bg-[#faf6f0]">
       <div className="sticky top-0 z-40 bg-[#faf6f0]/90 backdrop-blur-md border-b border-amber-200/50 px-4 sm:px-8 py-3 flex items-center justify-between">
@@ -413,120 +269,13 @@ function App(){
       </article>
       <footer className="bg-stone-800 text-stone-400 py-8 text-center text-xs"><p>{d.settings.footer}</p><p className="mt-2">{'©'} 2026 {d.settings.blogTitle}</p></footer>
     </div>);
-  }
-
-  // ===== HOME PAGE =====
-  return(
-    <div className="min-h-screen bg-[#faf6f0]">
-      <div className="fixed top-0 left-0 z-50 w-full h-1 bg-amber-100"><div className="h-full bg-amber-600 transition-all duration-200" style={{width:scrolled+"%"}}/></div>
-
-      {/* Full-bleed Nav */}
-      <nav className="sticky top-0 z-40 bg-[#faf6f0]/90 backdrop-blur-md border-b border-amber-200/50">
-        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
-          <div className="flex items-center justify-between h-16">
-            <span className="font-serif text-xl text-amber-900 tracking-wide">{d.settings.blogTitle}</span>
-            <div className="flex items-center gap-6 text-sm text-stone-600">
-              {nav.map(n=><a key={n.anchor} href={"#"+n.anchor} className="hover:text-amber-700 transition-colors">{n.label}</a>)}
-              <button onClick={()=>setAdmin(true)} className="text-stone-300 hover:text-amber-600 transition-colors" title="管理后台">{I.Settings("w-4 h-4")}</button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* ===== FULL-BLEED HERO ===== */}
-      <section className="relative overflow-hidden py-16 sm:py-24 lg:py-32 w-full">
-        <div className="absolute inset-0 opacity-[0.03]"><div className="w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(120,80,40,0.1)_0%,transparent_50%)]"/></div>
-        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 relative">
-          <div className="flex flex-col lg:flex-row items-center lg:items-start gap-10 lg:gap-20 max-w-7xl">
-            {/* Avatar */}
-            <div className="flex-shrink-0 flex flex-col items-center">
-              <div className="relative">
-                <div className={"w-36 h-36 sm:w-44 sm:h-44 rounded-full shadow-lg shadow-amber-200/50 flex items-center justify-center border-4 border-white ring-2 ring-amber-200/50 overflow-hidden "+(d.avatar?"":"bg-gradient-to-br from-amber-200 to-amber-300")}>
-                  {d.avatar?<img src={d.avatar} className="w-full h-full object-cover"/>:I.User("w-16 h-16 sm:w-20 sm:h-20 text-amber-600/60")}
-                </div>
-                <div className="absolute -bottom-2 -right-2 bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">1 / 15 年</div>
-              </div>
-              <div className="mt-6 w-full max-w-[220px]">
-                <div className="flex items-center justify-between text-xs text-stone-500 mb-1.5"><span>2026</span><span className="font-serif font-semibold text-amber-700 text-sm">15 年倒计时</span><span>2041</span></div>
-                <div className="h-2 bg-amber-100 rounded-full overflow-hidden"><div className="h-full w-[6.67%] bg-gradient-to-r from-amber-500 to-amber-600 rounded-full relative"><div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-amber-600 rounded-full shadow-md"/></div></div>
-                <p className="text-center text-xs text-stone-400 mt-1.5">已走过 1/15</p>
-              </div>
-            </div>
-            {/* Slogan */}
-            <div className="flex-1 text-center lg:text-left">
-              <h1 className="font-serif text-4xl sm:text-5xl lg:text-7xl leading-tight text-stone-800 tracking-wide">{d.hero.slogan1}<span className="text-amber-600">{d.hero.slogan2}</span></h1>
-              <p className="mt-4 text-lg sm:text-xl text-stone-500 leading-relaxed font-light">{d.hero.subtitle}</p>
-              <p className="mt-3 text-sm text-stone-400 max-w-2xl leading-relaxed lg:mx-0 mx-auto">{d.hero.desc}</p>
-              <div className="mt-6 flex flex-wrap gap-3 justify-center lg:justify-start">
-                {d.hero.tags.map((t,i)=><span key={i} className={"inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full border "+(i===0?"bg-amber-50 text-amber-800 border-amber-200/60":i===1?"bg-emerald-50 text-emerald-700 border-emerald-200/60":"bg-stone-100 text-stone-600 border-stone-200/60")}>
-                  {i===0?I.Calendar("w-3.5 h-3.5"):i===1?I.Target("w-3.5 h-3.5"):I.Heart("w-3.5 h-3.5")}{t}</span>)}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== 港卡专题 (Full bleed) ===== */}
-      <section id="hk" className="w-full py-16 sm:py-20 bg-gradient-to-br from-amber-50 via-white to-amber-50/30">
-        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
-          <div className="max-w-7xl">
-            <div className="flex items-center gap-3 mb-3">{I.Banknote("w-6 h-6 text-amber-600")}<span className="text-xs font-medium text-amber-700 tracking-widest uppercase">FEATURED TOPIC</span></div>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-stone-800 leading-tight">{d.hkSpecial.title}</h2>
-            <p className="mt-4 text-base sm:text-lg text-stone-500 max-w-3xl">{d.hkSpecial.desc}</p>
-            {/* Stats */}
-            <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {d.hkSpecial.stats.map((s,i)=><div key={i} className="bg-white/80 backdrop-blur rounded-xl border border-amber-200/40 p-5 text-center hover:shadow-sm transition-shadow">
+  , '\n\n  // ===== HOME PAGE =====\n  return(\n    ', React.createElement('div', {className: "min-h-screen bg-[#faf6f0]"}, React.createElement('div', {className: "fixed top-0 left-0 z-50 w-full h-1 bg-amber-100"}, React.createElement('div', {className: "h-full bg-amber-600 transition-all duration-200", style: {{width:scrolled+"%"}}})), React.createElement('nav', {className: "sticky top-0 z-40 bg-[#faf6f0]/90 backdrop-blur-md border-b border-amber-200/50"}, React.createElement('div', {className: "w-full px-6 sm:px-10 lg:px-16 xl:px-24"}, React.createElement('div', {className: "flex items-center justify-between h-16"}, React.createElement('span', {className: "font-serif text-xl text-amber-900 tracking-wide"}, d.settings.blogTitle), React.createElement('div', {className: "flex items-center gap-6 text-sm text-stone-600"}, nav.map(n=><a key={n.anchor} href={"#"+n.anchor} className="hover:text-amber-700 transition-colors">{n.label}</a>), React.createElement('button', {onClick: {()=>setAdmin(true)}, className: "text-stone-300 hover:text-amber-600 transition-colors", title: "管理后台"}, I.Settings("w-4 h-4")))))), React.createElement('section', {className: "relative overflow-hidden py-16 sm:py-24 lg:py-32 w-full"}, React.createElement('div', {className: "absolute inset-0 opacity-[0.03]"}, React.createElement('div', {className: "w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(120,80,40,0.1)_0%,transparent_50%)]"})), React.createElement('div', {className: "w-full px-6 sm:px-10 lg:px-16 xl:px-24 relative"}, React.createElement('div', {className: "flex flex-col lg:flex-row items-center lg:items-start gap-10 lg:gap-20 max-w-7xl"}, React.createElement('div', {className: "flex-shrink-0 flex flex-col items-center"}, React.createElement('div', {className: "relative"}, React.createElement('div', {className: {"w-36 h-36 sm:w-44 sm:h-44 rounded-full shadow-lg shadow-amber-200/50 flex items-center justify-center border-4 border-white ring-2 ring-amber-200/50 overflow-hidden "+(d.avatar?"":"bg-gradient-to-br from-amber-200 to-amber-300")}}, d.avatar?<img src={d.avatar} className="w-full h-full object-cover"/>:I.User("w-16 h-16 sm:w-20 sm:h-20 text-amber-600/60")), React.createElement('div', {className: "absolute -bottom-2 -right-2 bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md"}, '1 / 15 年')), React.createElement('div', {className: "mt-6 w-full max-w-[220px]"}, React.createElement('div', {className: "flex items-center justify-between text-xs text-stone-500 mb-1.5"}, React.createElement('span', null, '2026'), React.createElement('span', {className: "font-serif font-semibold text-amber-700 text-sm"}, '15 年倒计时'), React.createElement('span', null, '2041')), React.createElement('div', {className: "h-2 bg-amber-100 rounded-full overflow-hidden"}, React.createElement('div', {className: "h-full w-[6.67%] bg-gradient-to-r from-amber-500 to-amber-600 rounded-full relative"}, React.createElement('div', {className: "absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-amber-600 rounded-full shadow-md"}))), React.createElement('p', {className: "text-center text-xs text-stone-400 mt-1.5"}, '已走过 1/15'))), React.createElement('div', {className: "flex-1 text-center lg:text-left"}, React.createElement('h1', {className: "font-serif text-4xl sm:text-5xl lg:text-7xl leading-tight text-stone-800 tracking-wide"}, d.hero.slogan1, React.createElement('span', {className: "text-amber-600"}, d.hero.slogan2)), React.createElement('p', {className: "mt-4 text-lg sm:text-xl text-stone-500 leading-relaxed font-light"}, d.hero.subtitle), React.createElement('p', {className: "mt-3 text-sm text-stone-400 max-w-2xl leading-relaxed lg:mx-0 mx-auto"}, d.hero.desc), React.createElement('div', {className: "mt-6 flex flex-wrap gap-3 justify-center lg:justify-start"}, d.hero.tags.map((t,i)=><span key={i} className={"inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full border "+(i===0?"bg-amber-50 text-amber-800 border-amber-200/60":i===1?"bg-emerald-50 text-emerald-700 border-emerald-200/60":"bg-stone-100 text-stone-600 border-stone-200/60")}>
+                  {i===0?I.Calendar("w-3.5 h-3.5"):i===1?I.Target("w-3.5 h-3.5"):I.Heart("w-3.5 h-3.5")}{t}</span>)))))), React.createElement('section', {id: "hk", className: "w-full py-16 sm:py-20 bg-gradient-to-br from-amber-50 via-white to-amber-50/30"}, React.createElement('div', {className: "w-full px-6 sm:px-10 lg:px-16 xl:px-24"}, React.createElement('div', {className: "max-w-7xl"}, React.createElement('div', {className: "flex items-center gap-3 mb-3"}, I.Banknote("w-6 h-6 text-amber-600"), React.createElement('span', {className: "text-xs font-medium text-amber-700 tracking-widest uppercase"}, 'FEATURED TOPIC')), React.createElement('h2', {className: "font-serif text-3xl sm:text-4xl lg:text-5xl text-stone-800 leading-tight"}, d.hkSpecial.title), React.createElement('p', {className: "mt-4 text-base sm:text-lg text-stone-500 max-w-3xl"}, d.hkSpecial.desc), React.createElement('div', {className: "mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4"}, d.hkSpecial.stats.map((s,i)=><div key={i} className="bg-white/80 backdrop-blur rounded-xl border border-amber-200/40 p-5 text-center hover:shadow-sm transition-shadow">
                 <div className="text-2xl sm:text-3xl font-bold text-amber-700">{s.value}</div>
                 <div className="text-xs text-stone-500 mt-1">{s.label}</div>
-              </div>)}
-            </div>
-            {/* Video embed */}
-            {d.hkSpecial.videoUrl&&<div className="mt-8 aspect-video max-w-2xl rounded-xl overflow-hidden shadow-md bg-stone-200">
+              </div>)), d.hkSpecial.videoUrl&&<div className="mt-8 aspect-video max-w-2xl rounded-xl overflow-hidden shadow-md bg-stone-200">
               <iframe src={d.hkSpecial.videoUrl.includes("bilibili")?d.hkSpecial.videoUrl.replace("/video/","/player/")+"?autoplay=0":d.hkSpecial.videoUrl.replace("watch?v=","embed/")} className="w-full h-full" allowFullScreen/>
-            </div>}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== FEATURED ===== */}
-      <section id="featured" className="w-full py-16 sm:py-20 bg-white/60">
-        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
-          <div className="max-w-7xl">
-            <div className="flex items-center gap-3 mb-8">{I.Sparkles("w-5 h-5 text-amber-600")}<h2 className="font-serif text-2xl sm:text-3xl text-stone-800">精选推荐</h2></div>
-            <div onClick={()=>{if(d.featured.link)window.open(d.featured.link,"_blank");else setViewArticle({title:d.featured.title,desc:d.featured.desc,tags:d.featured.tags,date:d.featured.date,wordCount:d.featured.wordCount,cover:d.featured.cover,link:d.featured.link})}}
-              className="relative bg-white rounded-2xl border border-amber-200/40 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer group">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-400 via-amber-600 to-amber-400"/>
-              <div className="p-6 sm:p-8 lg:p-10">
-                <div className="flex flex-col lg:flex-row lg:items-start gap-6">
-                  <div className="flex-1">
-                    <div className="flex flex-wrap gap-2 mb-4">{d.featured.tags.map((t,i)=><span key={i} className={"inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full "+(i===0?"bg-amber-100 text-amber-800":"bg-blue-50 text-blue-700")}>{i===0?I.Star("w-3 h-3"):I.ScrollText("w-3 h-3")}{t}</span>)}</div>
-                    <h3 className="font-serif text-xl sm:text-2xl text-stone-800 leading-snug group-hover:text-amber-700 transition-colors">{d.featured.title}</h3>
-                    <p className="mt-4 text-stone-500 leading-relaxed text-sm sm:text-base line-clamp-3">{d.featured.desc}</p>
-                    <div className="mt-5 flex items-center gap-4 text-sm text-stone-400">
-                      <span className="flex items-center gap-1.5">{I.Clock("w-3.5 h-3.5")}{d.featured.date}</span>
-                      <span className="flex items-center gap-1.5">{I.FileText("w-3.5 h-3.5")}{d.featured.wordCount}</span>
-                    </div>
-                    <span className="mt-5 inline-flex items-center gap-1.5 text-amber-700 group-hover:text-amber-800 font-medium text-sm transition-colors">
-                      {d.featured.link?"打开原文":"阅读全文"}{I.ArrowUpRight("w-3.5 h-3.5")}
-                    </span>
-                  </div>
-                  {d.featured.cover?<img src={d.featured.cover} className="w-full lg:w-48 h-32 object-cover rounded-xl flex-shrink-0"/>:<div className="hidden lg:flex items-center justify-center w-28 h-28 rounded-full bg-amber-50 border border-amber-200/60 flex-shrink-0 self-center">{I.Globe("w-12 h-12 text-amber-500/60")}</div>}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== TIMELINE ===== */}
-      <section id="timeline" className="w-full py-16 sm:py-20">
-        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
-          <div className="max-w-7xl">
-            <div className="flex items-center gap-3 mb-8">{I.ScrollText("w-5 h-5 text-amber-600")}<h2 className="font-serif text-2xl sm:text-3xl text-stone-800">行动与财富日志</h2></div>
-            <div className="relative">
-              <div className="absolute left-[19px] sm:left-[21px] top-0 bottom-0 w-0.5 bg-amber-200/70"/>
-              <div className="space-y-10">
-                {d.timeline.map((item,idx)=>(
+            </div>))), React.createElement('section', {id: "featured", className: "w-full py-16 sm:py-20 bg-white/60"}, React.createElement('div', {className: "w-full px-6 sm:px-10 lg:px-16 xl:px-24"}, React.createElement('div', {className: "max-w-7xl"}, React.createElement('div', {className: "flex items-center gap-3 mb-8"}, I.Sparkles("w-5 h-5 text-amber-600"), React.createElement('h2', {className: "font-serif text-2xl sm:text-3xl text-stone-800"}, '精选推荐')), React.createElement('div', {onClick: {()=>{if(d.featured.link)window.open(d.featured.link,"_blank");else setViewArticle({title:d.featured.title,desc:d.featured.desc,tags:d.featured.tags,date:d.featured.date,wordCount:d.featured.wordCount,cover:d.featured.cover,link:d.featured.link})}}, className: "relative bg-white rounded-2xl border border-amber-200/40 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer group"}, React.createElement('div', {className: "absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-400 via-amber-600 to-amber-400"}), React.createElement('div', {className: "p-6 sm:p-8 lg:p-10"}, React.createElement('div', {className: "flex flex-col lg:flex-row lg:items-start gap-6"}, React.createElement('div', {className: "flex-1"}, React.createElement('div', {className: "flex flex-wrap gap-2 mb-4"}, d.featured.tags.map((t,i)=><span key={i} className={"inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full "+(i===0?"bg-amber-100 text-amber-800":"bg-blue-50 text-blue-700")}>{i===0?I.Star("w-3 h-3"):I.ScrollText("w-3 h-3")}{t}</span>)), React.createElement('h3', {className: "font-serif text-xl sm:text-2xl text-stone-800 leading-snug group-hover:text-amber-700 transition-colors"}, d.featured.title), React.createElement('p', {className: "mt-4 text-stone-500 leading-relaxed text-sm sm:text-base line-clamp-3"}, d.featured.desc), React.createElement('div', {className: "mt-5 flex items-center gap-4 text-sm text-stone-400"}, React.createElement('span', {className: "flex items-center gap-1.5"}, I.Clock("w-3.5 h-3.5"), d.featured.date), React.createElement('span', {className: "flex items-center gap-1.5"}, I.FileText("w-3.5 h-3.5"), d.featured.wordCount)), React.createElement('span', {className: "mt-5 inline-flex items-center gap-1.5 text-amber-700 group-hover:text-amber-800 font-medium text-sm transition-colors"}, d.featured.link?"打开原文":"阅读全文", I.ArrowUpRight("w-3.5 h-3.5"))), d.featured.cover?<img src={d.featured.cover} className="w-full lg:w-48 h-32 object-cover rounded-xl flex-shrink-0"/>:<div className="hidden lg:flex items-center justify-center w-28 h-28 rounded-full bg-amber-50 border border-amber-200/60 flex-shrink-0 self-center">{I.Globe("w-12 h-12 text-amber-500/60")}</div>)))))), React.createElement('section', {id: "timeline", className: "w-full py-16 sm:py-20"}, React.createElement('div', {className: "w-full px-6 sm:px-10 lg:px-16 xl:px-24"}, React.createElement('div', {className: "max-w-7xl"}, React.createElement('div', {className: "flex items-center gap-3 mb-8"}, I.ScrollText("w-5 h-5 text-amber-600"), React.createElement('h2', {className: "font-serif text-2xl sm:text-3xl text-stone-800"}, '行动与财富日志')), React.createElement('div', {className: "relative"}, React.createElement('div', {className: "absolute left-[19px] sm:left-[21px] top-0 bottom-0 w-0.5 bg-amber-200/70"}), React.createElement('div', {className: "space-y-10"}, d.timeline.map((item,idx)=>(
                   <div key={idx} className="relative pl-12 sm:pl-14">
                     <div className={"absolute left-2.5 sm:left-3 top-1 w-4 h-4 rounded-full border-2 border-white shadow-sm "+(item.type==="finance"?"bg-amber-500":"bg-emerald-500")}/>
                     <div onClick={()=>{if(item.link)window.open(item.link,"_blank")}} className={"bg-white rounded-xl border border-stone-200/60 p-5 sm:p-6 hover:shadow-sm transition-all "+(item.link?"cursor-pointer hover:border-amber-200/60":"")}>
@@ -539,20 +288,7 @@ function App(){
                       {item.link&&<span className="mt-2 inline-flex items-center gap-1 text-xs text-amber-600">{I.ExternalLink("w-3 h-3")}查看详情</span>}
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== THOUGHTS ===== */}
-      <section id="thoughts" className="w-full py-16 sm:py-20 bg-white/40">
-        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
-          <div className="max-w-7xl">
-            <div className="flex items-center gap-3 mb-8">{I.Coffee("w-5 h-5 text-amber-600")}<h2 className="font-serif text-2xl sm:text-3xl text-stone-800">夹心层碎碎念</h2></div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-              {d.thoughts.map((item,idx)=>(
+                ))))))), React.createElement('section', {id: "thoughts", className: "w-full py-16 sm:py-20 bg-white/40"}, React.createElement('div', {className: "w-full px-6 sm:px-10 lg:px-16 xl:px-24"}, React.createElement('div', {className: "max-w-7xl"}, React.createElement('div', {className: "flex items-center gap-3 mb-8"}, I.Coffee("w-5 h-5 text-amber-600"), React.createElement('h2', {className: "font-serif text-2xl sm:text-3xl text-stone-800"}, '夹心层碎碎念')), React.createElement('div', {className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"}, d.thoughts.map((item,idx)=>(
                 <div key={idx} className="bg-white rounded-xl border border-stone-200/40 p-5 sm:p-6 hover:shadow-sm hover:border-amber-200/60 transition-all duration-300">
                   <div className="flex items-center gap-2 mb-3">
                     <div className="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center">{I[item.icon]?I[item.icon]("w-4 h-4 text-amber-600"):I.Lightbulb("w-4 h-4 text-amber-600")}</div>
@@ -560,19 +296,7 @@ function App(){
                   <p className="text-sm text-stone-600 leading-relaxed italic">{item.text}</p>
                   <div className="mt-4 flex items-center gap-2 text-xs text-stone-400">{I.Calendar("w-3 h-3")}<span>{item.date}</span></div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== BOOKSHELF ===== */}
-      <section id="bookshelf" className="w-full py-16 sm:py-20">
-        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
-          <div className="max-w-7xl">
-            <div className="flex items-center gap-3 mb-8">{I.Library("w-5 h-5 text-amber-600")}<h2 className="font-serif text-2xl sm:text-3xl text-stone-800">我的书架 {'&'} 武器库</h2></div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {d.books.map((book,idx)=>(
+              )))))), React.createElement('section', {id: "bookshelf", className: "w-full py-16 sm:py-20"}, React.createElement('div', {className: "w-full px-6 sm:px-10 lg:px-16 xl:px-24"}, React.createElement('div', {className: "max-w-7xl"}, React.createElement('div', {className: "flex items-center gap-3 mb-8"}, I.Library("w-5 h-5 text-amber-600"), React.createElement('h2', {className: "font-serif text-2xl sm:text-3xl text-stone-800"}, '我的书架 ', '&', ' 武器库')), React.createElement('div', {className: "grid sm:grid-cols-2 lg:grid-cols-4 gap-5"}, d.books.map((book,idx)=>(
                 <div key={idx} onClick={()=>{if(book.link)window.open(book.link,"_blank")}}
                   className={"bg-white rounded-xl border border-stone-200/40 p-5 transition-all duration-300 group "+(book.link?"hover:shadow-md hover:border-amber-200/60 cursor-pointer":"")}>
                   <div className="aspect-[3/4] rounded-lg bg-gradient-to-br from-amber-100 to-amber-200/60 mb-4 flex items-center justify-center border border-amber-200/40 overflow-hidden group-hover:from-amber-200/80 group-hover:to-amber-300/60 transition-colors">
@@ -582,48 +306,12 @@ function App(){
                   <p className="text-xs text-stone-400 mt-1">{book.author}</p>
                   <p className="text-xs text-stone-400 mt-2 italic leading-relaxed">{book.quote}</p>
                 </div>
-              ))}
-            </div>
-            <div className="mt-10">
-              <h3 className="font-serif text-lg text-stone-700 mb-4 flex items-center gap-2">{I.Shield("w-4 h-4 text-amber-600")}常用工具</h3>
-              <div className="flex flex-wrap gap-3">
-                {d.tools.map((tool,idx)=>(
+              ))), React.createElement('div', {className: "mt-10"}, React.createElement('h3', {className: "font-serif text-lg text-stone-700 mb-4 flex items-center gap-2"}, I.Shield("w-4 h-4 text-amber-600"), '常用工具'), React.createElement('div', {className: "flex flex-wrap gap-3"}, d.tools.map((tool,idx)=>(
                   <span key={idx} onClick={()=>{if(tool.url)window.open(tool.url,"_blank")}}
                     className={"inline-flex items-center gap-1.5 bg-white border border-stone-200/60 rounded-full px-3.5 py-1.5 text-xs text-stone-600 transition-colors "+(tool.url?"hover:border-amber-300 hover:text-amber-700 cursor-pointer":"")}>
                     {tool.name}{tool.url&&I.ExternalLink("w-3 h-3")}
                   </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== FOOTER ===== */}
-      <footer className="w-full bg-stone-800 text-stone-400 py-12">
-        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 text-center">
-          <div className="font-serif text-lg text-stone-300 mb-2">{d.settings.blogTitle}</div>
-          <p className="text-xs text-stone-500 max-w-md mx-auto leading-relaxed">{d.settings.footer}</p>
-          <div className="mt-4 flex items-center justify-center gap-4 text-xs text-stone-500">
-            <span>{'©'} 2026 {d.settings.blogTitle}</span><span className="w-px h-3 bg-stone-600"/><span>Made with {'♥'} and {'☕'}</span>
-          </div>
-        </div>
-      </footer>
-
-      {/* Admin FAB */}
-      <button onClick={()=>setAdmin(true)} className="fixed bottom-6 right-6 z-40 w-10 h-10 rounded-full bg-white border border-stone-300 shadow-md flex items-center justify-center text-stone-400 hover:text-amber-700 hover:border-amber-400 transition-all" title="管理后台">{I.Settings("w-4 h-4")}</button>
-
-      {toast&&<div className="fixed top-4 right-4 z-[100] bg-emerald-600 text-white text-sm px-4 py-2 rounded-lg shadow-lg animate-fade-in">{toast}</div>}
-    </div>
-  );
-}
-
-// ===== ADMIN COMPONENTS =====
-function Section({title,children}){return(<div className="bg-white rounded-2xl border border-stone-200/60 p-5 sm:p-6"><h3 className="font-serif text-base text-stone-700 mb-4 pb-3 border-b border-stone-100">{title}</h3><div className="space-y-4">{children}</div></div>)}
-function Row({label,children}){return(<div><label className="block text-xs text-stone-500 mb-1.5">{label}</label>{children}</div>)}
-
-// ===== MOUNT =====
-(function(){
+                ))))))), React.createElement('footer', {className: "w-full bg-stone-800 text-stone-400 py-12"}, React.createElement('div', {className: "w-full px-6 sm:px-10 lg:px-16 xl:px-24 text-center"}, React.createElement('div', {className: "font-serif text-lg text-stone-300 mb-2"}, d.settings.blogTitle), React.createElement('p', {className: "text-xs text-stone-500 max-w-md mx-auto leading-relaxed"}, d.settings.footer), React.createElement('div', {className: "mt-4 flex items-center justify-center gap-4 text-xs text-stone-500"}, React.createElement('span', null, '©', ' 2026 ', d.settings.blogTitle), React.createElement('span', {className: "w-px h-3 bg-stone-600"}), React.createElement('span', null, 'Made with ', '♥', ' and ', '☕')))), React.createElement('button', {onClick: {()=>setAdmin(true)}, className: "fixed bottom-6 right-6 z-40 w-10 h-10 rounded-full bg-white border border-stone-300 shadow-md flex items-center justify-center text-stone-400 hover:text-amber-700 hover:border-amber-400 transition-all", title: "管理后台"}, I.Settings("w-4 h-4")), toast&&<div className="fixed top-4 right-4 z-[100] bg-emerald-600 text-white text-sm px-4 py-2 rounded-lg shadow-lg animate-fade-in">{toast}</div>), '\n  );\n}\n\n// ===== ADMIN COMPONENTS =====\nfunction Section(', title,children, ')', return(<div className="bg-white rounded-2xl border border-stone-200/60 p-5 sm:p-6"><h3 className="font-serif text-base text-stone-700 mb-4 pb-3 border-b border-stone-100">{title}</h3><div className="space-y-4">{children}</div></div>), '\nfunction Row(', label,children, ')', return(<div><label className="block text-xs text-stone-500 mb-1.5">{label}</label>{children}</div>), '\n\n// ===== MOUNT =====\n(function()', 
 var diag=document.getElementById("root");
 var steps=[];
 function log(s){steps.push(s);console.log("[Mount] "+s);}
@@ -657,7 +345,7 @@ try {
   log("FATAL: "+e.message+"\n"+e.stack);
   diag.innerHTML='<div style="padding:40px;text-align:left;font-family:monospace;max-width:700px;margin:0 auto"><h2 style="color:#c0392b;font-family:sans-serif">React 渲染失败</h2><pre style="font-size:13px;line-height:1.6;white-space:pre-wrap;background:#fff3f3;padding:16px;border-radius:8px;border:1px solid #fcc">'+e.message+'\n\n'+e.stack+'</pre><pre style="font-size:11px;color:#888;margin-top:16px;white-space:pre-wrap;background:#f9f9f9;padding:12px;border-radius:8px">Steps:\n'+steps.join("\n")+'</pre><p style="font-size:12px;color:#999;margin-top:16px">请运行: python3 -m http.server 8080</p></div>';
 }
-})();
+, ')();\n')
 </script>
 </body>
 </html>
