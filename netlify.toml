@@ -4,7 +4,7 @@
 
 # Prevent WeChat / browser caching for HTML
 [[headers]]
-  for = "/index.html"
+  for = "/"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
     Pragma = "no-cache"
