@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>React Test</title></head>
+<body>
+<div id="root"><p>Loading...</p></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script>
+console.log("React:",typeof React,"ReactDOM:",typeof ReactDOM);
+try {
+  var root = ReactDOM.createRoot(document.getElementById("root"));
+  root.render(React.createElement("h1",{style:{color:"green"}},"React works!"));
+  console.log("Render success");
+} catch(e) {
+  document.getElementById("root").innerHTML='<h1 style="color:red">Error: '+e.message+'</h1>';
+  console.error(e);
+}
+</script>
+</body></html>
